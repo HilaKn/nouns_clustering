@@ -1,0 +1,32 @@
+import argparse
+from data_processor import *
+from clustering_wrapper import *
+
+clustering_algs = ["dbscan","kmeans"]
+def run():
+    run_on_nouns_file_flag = False
+    if args.input_from_noun_file_flag:
+        run_on_nouns_file_flag = True
+    data_processor = DataProcessor(args.word_embeddings,args.input_file,run_on_nouns_file_flag)
+    nouns_data = data_processor.prepare_data()
+    for alg in clustering_algs:
+        cluster_wrapper = get_cluster_from_factory(alg,nouns_data)
+        cluster_wrapper.cluster_data()
+        cluster_wrapper.output_clustering_results(args.output_folder)
+
+if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser(description='Generate adjectives with multi senses list.')
+
+    parser.add_argument('word_embeddings',help='pre-trained word embedding')
+    parser.add_argument('input_file',help='large text file with POS tagging')
+    parser.add_argument('output_folder', help ='output file for clustered nouns')
+    parser.add_argument('-n','--input_from_noun_file_flag',action='store_true', help ='True if we have nouns list file. False to read from parser output file')
+
+
+    args = parser.parse_args()
+
+    run()
+
+    print "DONE"
+
