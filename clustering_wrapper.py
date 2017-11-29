@@ -81,7 +81,7 @@ class KMeans_Wrapper(ClusteringWrapper):
 
 class DBSCAN_Wrapper(ClusteringWrapper):
 
-    EPS = 0.4
+    EPS = 0.3
     MIN_SAMP = 5
 
     def __init__(self,words_data):
